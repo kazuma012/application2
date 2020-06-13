@@ -1,0 +1,81 @@
+<body>
+	<div class="body">
+		<div class="container">
+			<% if flash[:notice] %>   <p><%= flash[:notice] %></p> <% end %> 
+			<div class="row">
+				<% if @newbook.errors.any? %>
+				  <div id="error_explanation">
+				 	<h2><%= pluralize(@newbook.errors.count, "error") %> prohibited this book from being saved:</h2>
+				 	<ul>
+				 		<% @newbook.errors.full_messages.each do |msg| %>
+				 		  <li><%= msg %></li>
+				        <% end %>
+				    </ul>
+				  </div>
+				<% end %>
+				<div class="col-xs-3">
+					<h2>User info</h2>
+					<div class="profile-container">
+				    <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, format: 'jpeg', class: "img-circle pull-left profile-img", fallback: "no_image.jpg" %>
+					<table class="table">
+						<tbody>
+							<tr>
+								<th>
+									<p>name  <%= @user.name %></p>
+								</th>
+							</tr>
+							<tr>
+								<th>
+									introduction  <%= @user.introduction %>
+								</th>
+							</tr>
+						</tbody>
+					</table>
+					        <% if @user == current_user %>
+							<%= link_to edit_user_path(@user.id) do %>
+							<i class="btn btn-default glyphicon glyphicon-wrench"></i>
+							<% end %>
+							<% end %>
+							<h2>New book</h2>
+							<%= form_for(@newbook, url: books_path) do |f| %>
+
+							<h5>Title</h5>
+							<%= f.text_field :title %>
+
+							<h5>Opinion</h5>
+							<%= f.text_area :body %>
+
+							<%= f.submit 'Create Book' %>
+							<% end %>
+			        </div>
+					<div class="col-xs-9">
+						<h2>Users</h2>
+						<table calss="table table-hover table-inverse">
+							<thead>
+								<tr>
+									<th>image</th>
+									<th>name</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% @users.each do |user| %>
+								<tr>
+									<td>
+									  	<%= attachment_image_tag user, :profile_image, :fill, 60, 60, format: 'jpeg', class: "img-circle pull-left profile-img", fallback: "no_image.jpg", size:'30x30' %>
+								    </td>
+								    <td>
+									   	<%= user.name %>
+								    </td>
+									<td>
+										<%= link_to 'Show', user_path(user.id) %>
+									</td>
+								</tr>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
+	            </div>
+	        </div>
+        </div>
+    </div>
+</body>
